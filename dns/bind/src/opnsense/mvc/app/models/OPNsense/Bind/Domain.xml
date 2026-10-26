@@ -67,9 +67,11 @@
                     <Default>1</Default>
                     <Required>Y</Required>
                 </allowrndcupdate>
-                <dnssecpolicy type="TextField">
-                    <Mask>/^[a-zA-Z0-9_.-]{1,64}$/</Mask>
-                    <ValidationMessage>Enter the name of a DNSSEC policy: default, insecure, none or a custom policy name.</ValidationMessage>
+                <dnssecpolicy type="OptionField">
+                    <OptionValues>
+                        <default>default</default>
+                        <insecure>insecure</insecure>
+                    </OptionValues>
                 </dnssecpolicy>
                 <serial type="TextField"/>
                 <ttl type="IntegerField">

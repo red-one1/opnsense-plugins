@@ -9,7 +9,7 @@ Plugin Changelog
 
 1.35
 
-* Add DNSSEC signing with BIND dnssec-policy for primary and secondary zones, including a command to show the DNSSEC state and DS records
+* Add DNSSEC signing with the BIND default dnssec-policy for primary and secondary zones, including a command to show the DNSSEC state and DS records
 
 1.34
 
