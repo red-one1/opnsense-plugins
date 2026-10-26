@@ -7,6 +7,10 @@ necessary for asking and answering name service questions.
 Plugin Changelog
 ================
 
+1.35
+
+* Add DNSSEC signing with BIND dnssec-policy for primary and secondary zones, including a command to show the DNSSEC state and DS records
+
 1.34
 
 * Add custom configuration include directory /usr/local/etc/namedb/named.conf.d (contributed by Nicholas Card)

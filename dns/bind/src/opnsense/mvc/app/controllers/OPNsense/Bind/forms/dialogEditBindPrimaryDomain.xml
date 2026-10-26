@@ -36,6 +36,12 @@
         <help>Allow updates via the RDNC key named "rndc-key". The key is shown in the general tab.</help>
     </field>
     <field>
+        <id>domain.dnssecpolicy</id>
+        <label>DNSSEC Policy</label>
+        <type>text</type>
+        <help>Sign this zone automatically with the given BIND dnssec-policy (inline signing). Use "default" for BIND's built-in policy (one ECDSA P-256 CSK, no scheduled rollover), "insecure" while removing DNSSEC from a signed zone, or the name of a policy you defined in /usr/local/etc/namedb/named.conf.d (named does not start if the policy does not exist). Leave empty to keep the zone unsigned. After enabling, publish the DS record shown by the DNSSEC command at the parent zone. The signing keys are kept in /usr/local/etc/namedb/working and are not part of the OPNsense configuration backup.</help>
+    </field>
+    <field>
         <id>domain.ttl</id>
         <label>TTL</label>
         <type>text</type>

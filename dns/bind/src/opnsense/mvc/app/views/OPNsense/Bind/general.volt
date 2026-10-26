@@ -318,6 +318,22 @@ function zone_test(zonename) {
     });
 }
 
+function zone_dnssec(zonename) {
+    ajaxCall(url = "/api/bind/general/zonednssec/", {'zone': zonename}, callback = function(data, status) {
+        BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_INFO,
+            title: "{{ lang._('DNSSEC status') }}: " + $('<div/>').text(zonename).html(),
+            message: $('<pre/>').css({'max-height': '60vh', 'overflow': 'auto', 'white-space': 'pre-wrap'}).text(data['response']),
+            buttons: [{
+                label: "{{ lang._('Close') }}",
+                action: function(dlg) {
+                    dlg.close();
+                },
+            }]
+        });
+    });
+}
+
 function zone_show(payload) {
     ajaxCall(url = "/api/bind/general/zoneshow/", payload, callback = function(data, status) {
         if (data['time'] && data['zone_content']) {
@@ -413,6 +429,11 @@ $(document).ready(function() {
                 'classname': "fa fa-fw fa-stethoscope  ",
                 'sequence': 300,
             },
+            'bind-dnssec': {
+                'title': "DNSSEC status & DS records",
+                'classname': "fa fa-fw fa-lock  ",
+                'sequence': 310,
+            },
         },
         options: {
             selection: true,
@@ -445,6 +466,11 @@ $(document).ready(function() {
             }
         });
 
+        // DNSSEC status button
+        $("#grid-primary-domains").find(".command-bind-dnssec").off("click").on("click", function(ev) {
+            zone_dnssec($(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text());
+        });
+
         let ids = $("#grid-primary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-primary-domains").bootgrid('select', [ids[0].uuid]);
@@ -458,6 +484,13 @@ $(document).ready(function() {
         'add': '/api/bind/domain/add_secondary_domain/',
         'del': '/api/bind/domain/del_domain/',
         'toggle': '/api/bind/domain/toggle_domain/',
+        commands: {
+            'bind-dnssec': {
+                'title': "DNSSEC status & DS records",
+                'classname': "fa fa-fw fa-lock  ",
+                'sequence': 310,
+            },
+        },
         options: {
             selection: false,
             multiSelect: false,
@@ -465,6 +498,10 @@ $(document).ready(function() {
             rowCount: [7, 14, 20, 50, 100, -1]
         }
     }).on("loaded.rs.jquery.bootgrid", function(e) {
+        $("#grid-secondary-domains").find(".command-bind-dnssec").off("click").on("click", function(ev) {
+            zone_dnssec($(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text());
+        });
+
         let ids = $("#grid-secondary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-secondary-domains").bootgrid('select', [ids[0].uuid]);

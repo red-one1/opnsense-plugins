@@ -59,4 +59,15 @@ class GeneralController extends ApiMutableModelControllerBase
         }
         return $response;
     }
+
+    public function zonednssecAction($zonename = null)
+    {
+        $response = "request error";
+        if ($this->request->hasPost("zone")) {
+            $zonename = $this->request->getPost("zone");
+            $backend = new Backend();
+            $response = trim($backend->configdpRun("bind zone dnssec", [$zonename]));
+        }
+        return array("response" => $response);
+    }
 }
