@@ -318,6 +318,22 @@ function zone_test(zonename) {
     });
 }
 
+function zone_dnssec(zonename) {
+    ajaxCall(url = "/api/bind/general/zonednssec/", {'zone': zonename}, callback = function(data, status) {
+        BootstrapDialog.show({
+            type: BootstrapDialog.TYPE_INFO,
+            title: "{{ lang._('DNSSEC status') }}: " + $('<div/>').text(zonename).html(),
+            message: $('<pre/>').css({'max-height': '60vh', 'overflow': 'auto', 'white-space': 'pre-wrap'}).text(data['response']),
+            buttons: [{
+                label: "{{ lang._('Close') }}",
+                action: function(dlg) {
+                    dlg.close();
+                },
+            }]
+        });
+    });
+}
+
 function zone_show(payload) {
     ajaxCall(url = "/api/bind/general/zoneshow/", payload, callback = function(data, status) {
         if (data['time'] && data['zone_content']) {
@@ -413,6 +429,14 @@ $(document).ready(function() {
                 'classname': "fa fa-fw fa-stethoscope  ",
                 'sequence': 300,
             },
+            'bind-dnssec': {
+                'title': "DNSSEC status & DS records",
+                'classname': "fa fa-fw fa-lock  ",
+                'sequence': 310,
+                'method': function(event, cell) {
+                    zone_dnssec(cell.getData()['domainname']);
+                },
+            },
         },
         options: {
             selection: true,
@@ -458,6 +482,16 @@ $(document).ready(function() {
         'add': '/api/bind/domain/add_secondary_domain/',
         'del': '/api/bind/domain/del_domain/',
         'toggle': '/api/bind/domain/toggle_domain/',
+        commands: {
+            'bind-dnssec': {
+                'title': "DNSSEC status & DS records",
+                'classname': "fa fa-fw fa-lock  ",
+                'sequence': 310,
+                'method': function(event, cell) {
+                    zone_dnssec(cell.getData()['domainname']);
+                },
+            },
+        },
         options: {
             selection: false,
             multiSelect: false,
