@@ -428,6 +428,23 @@ $(document).ready(function() {
                 'title': "Check & preview",
                 'classname': "fa fa-fw fa-stethoscope  ",
                 'sequence': 300,
+                'method': function(event, cell) {
+                    if (cell.getData()['enabled'] === '1') {
+                        zone_test(cell.getData()['domainname']);
+                    } else {
+                        BootstrapDialog.show({
+                            type: BootstrapDialog.TYPE_DANGER,
+                            title: "{{ lang._('Error') }}",
+                            message: "{{ lang._('For zone Check and Show to work, the zone must be enabled and the configuration applied.') }}",
+                            buttons: [{
+                                label: 'Ok',
+                                action: function(dlg) {
+                                    dlg.close();
+                                },
+                            }]
+                        });
+                    }
+                },
             },
             'bind-dnssec': {
                 'title': "DNSSEC status & DS records",
@@ -449,26 +466,6 @@ $(document).ready(function() {
     }).on("deselected.rs.jquery.bootgrid", function(e, rows) {
         $("#grid-primary-records").bootgrid('reload');
     }).on("loaded.rs.jquery.bootgrid", function(e) {
-        // Checkzone button
-        $("#grid-primary-domains").find(".command-bind-checkzone").off("click").on("click", function(ev) {
-            if (!$(this).closest(".tabulator-row").hasClass("text-muted")) {
-                let zonename = $(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text();
-                zone_test(zonename);
-            } else {
-                BootstrapDialog.show({
-                    type: BootstrapDialog.TYPE_DANGER,
-                    title: "{{ lang._('Error') }}",
-                    message: "{{ lang._('For zone Check and Show to work, the zone must be enabled and the configuration applied.') }}",
-                    buttons: [{
-                        label: 'Ok',
-                        action: function(dlg) {
-                            dlg.close();
-                        },
-                    }]
-                });
-            }
-        });
-
         let ids = $("#grid-primary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-primary-domains").bootgrid('select', [ids[0].uuid]);
