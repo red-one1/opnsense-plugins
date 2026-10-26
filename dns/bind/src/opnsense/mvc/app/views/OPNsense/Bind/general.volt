@@ -433,6 +433,9 @@ $(document).ready(function() {
                 'title': "DNSSEC status & DS records",
                 'classname': "fa fa-fw fa-lock  ",
                 'sequence': 310,
+                'method': function(event, cell) {
+                    zone_dnssec(cell.getData()['domainname']);
+                },
             },
         },
         options: {
@@ -466,11 +469,6 @@ $(document).ready(function() {
             }
         });
 
-        // DNSSEC status button
-        $("#grid-primary-domains").find(".command-bind-dnssec").off("click").on("click", function(ev) {
-            zone_dnssec($(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text());
-        });
-
         let ids = $("#grid-primary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-primary-domains").bootgrid('select', [ids[0].uuid]);
@@ -489,6 +487,9 @@ $(document).ready(function() {
                 'title': "DNSSEC status & DS records",
                 'classname': "fa fa-fw fa-lock  ",
                 'sequence': 310,
+                'method': function(event, cell) {
+                    zone_dnssec(cell.getData()['domainname']);
+                },
             },
         },
         options: {
@@ -498,10 +499,6 @@ $(document).ready(function() {
             rowCount: [7, 14, 20, 50, 100, -1]
         }
     }).on("loaded.rs.jquery.bootgrid", function(e) {
-        $("#grid-secondary-domains").find(".command-bind-dnssec").off("click").on("click", function(ev) {
-            zone_dnssec($(this).closest(".tabulator-row").find("[tabulator-field='domainname']").text());
-        });
-
         let ids = $("#grid-secondary-domains").bootgrid("getCurrentRows");
         if (ids.length > 0) {
             $("#grid-secondary-domains").bootgrid('select', [ids[0].uuid]);
